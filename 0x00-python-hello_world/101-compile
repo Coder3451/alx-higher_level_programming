@@ -1,7 +1,12 @@
-import os
-import py_compile
+#!/usr/bin/env bash
 
-input_file = os.environ['PYFILE']
-output_file = input_file + 'c'
+if [ -z "$PYFILE" ]; then
+	exit 1
+fi
 
-py_compile.compile(input_file, cfile=output_file)
+echo "Compiling $PYFILE ..."
+python3 -m py_compile "$PYFILE"
+
+compiled=$(ls __pycache__/*.pyc)
+output="${PYFILE}c"
+mv "$compiled" "$output"
